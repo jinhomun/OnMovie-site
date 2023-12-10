@@ -6,13 +6,16 @@
                 <a href="#">
                     <img :src="'https://image.tmdb.org/t/p/w500' + movieBasic.poster_path" :alt="movieBasic.title">
                 </a>
+
+                    
+                
             </div>
             <div class="right">
                 <h2>{{ movieBasic.title }}</h2>
                 <p class="desc">
                     {{ movieBasic.overview }}
                 </p>
-                <P>인기 : {{ movieBasic.popularity }}</P>
+                <!-- <P>인기 : {{ movieBasic.popularity }}</P>
                 <p>개봉 날짜 : {{ movieBasic.release_date }}</p>
                 <p>영화 시간 : {{ movieBasic.runtime }}분</p>
                 <p>평점 : {{ movieBasic.vote_average }}</p>
@@ -20,7 +23,7 @@
                     <span v-for="genre in movieBasic.genres" :key="genre.id" class="genre">
                         {{ genre.name }}
                     </span>
-                </div>
+                </div> -->
 
                 <div class="credit">
                     <div v-for="(cast, index) in cast" :key="index">
@@ -38,7 +41,37 @@ export default {
         movieBasic: {
             type: Object,
             required: true
+        },
+        movieCredits: {
+            type: Object,
+            required: true
+        },
+    },
+};
+</script>
+<style lang="scss">
+.container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+
+    .left {
+        width: 350px;
+
+    }
+
+    .right {
+        width: calc(100% - 390px);
+
+        h2 {
+            font-size: 30px;
+            margin-top: 100px;
+        }
+
+        .desc {
+            margin-bottom: 10px;
         }
     }
 }
-</script>
+</style>
