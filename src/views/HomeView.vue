@@ -3,8 +3,26 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const movies = ref([]);
-const searchKeyword = ref('');
+const searchQuery = ref('');
 const currentTag = ref('latest');
+
+
+const searchMovies = async () => {
+  try {
+    const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
+      params: {
+        api_key: 'fb1030ba317555b28d3ed69041db88ef',
+        language: 'ko-KR',
+        query: searchQuery.value,
+      }
+    });
+    movies.value = response.data.results;
+
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const fetchMovies = async (category) => {
   let url = 'https://api.themoviedb.org/3/movie/popular';
@@ -54,22 +72,23 @@ onMounted(async () => {
 <template>
   <HeaderSection />
   <main id="main" role="main">
-    <div class="header__intro" v-if="movies.length > 0" :style="{ backgroundImage: 'url(' + getImageUrl(movies[0].backdrop_path) + ')' }">
-                <div class="container">
-                    <div class="left play__icon">
-                        <a href="#">
-                          <img :src="'https://image.tmdb.org/t/p/w500/' + getImageUrl(movies[0].poster_path)" alt="">
-                        </a>
-                    </div>
-                    <div class="right">
-                        <h2>{{ movies[0].title }}</h2>
-                        <p class="desc">
-                          "{{ movies[0].overview }}"
-                        </p>
-                        <p class="date">개봉 : {{ movies[0].release_date }}</p>
-                        <p class="average">평점 : {{ movies[0].vote_average }} </p>
+    <div class="header__intro" v-if="movies.length > 0"
+      :style="{ backgroundImage: 'url(' + getImageUrl(movies[0].backdrop_path) + ')' }">
+      <div class="container">
+        <div class="left play__icon">
+          <a href="#">
+            <img :src="'https://image.tmdb.org/t/p/w500/' + getImageUrl(movies[0].poster_path)" alt="">
+          </a>
+        </div>
+        <div class="right">
+          <h2>{{ movies[0].title }}</h2>
+          <p class="desc">
+            "{{ movies[0].overview }}"
+          </p>
+          <p class="date">개봉 : {{ movies[0].release_date }}</p>
+          <p class="average">평점 : {{ movies[0].vote_average }} </p>
 
-                        <!-- <div class="credits">
+          <!-- <div class="credits">
                             <div>
                                 <img src="https://image.tmdb.org/t/p/w500/qoOp8XvZ4v7B0C9ZmtoRCl9CDSO.jpg"
                                     alt="John David Washington">
@@ -82,17 +101,17 @@ onMounted(async () => {
                                     alt="Ken Watanabe">
                             </div>
                         </div> -->
-                    </div>
-                </div>
-            </div>
-            <div class="container">
+        </div>
+      </div>
+    </div>
+    <div class="container">
       <div class="movie__inner">
 
-        <section class="movie__search">
+        <div class="movie__search">
           <h2 class="blind">검색하기</h2>
-          <input type="search" v-model="searchKeyword" placeholder="검색어를 입력해주세요!" @keyup.enter="serachMovies">
-          <button type="submit" @click="serachMovies">검색</button>
-        </section>
+          <input tpye="search" v-model="searchQuery" type="search" placeholder="검색어를 입력해주세요!" @keyup.enter="searchMovies">
+          <button type="submit" @click="searchMovies">확인</button>
+        </div>
         <!-- //movie__search -->
 
         <div class="movie__tag">
@@ -109,7 +128,8 @@ onMounted(async () => {
           <h2 class="blind">영화</h2>
           <div class="movie play__icon" v-for="movie in movies" :key="movie.id">
             <a :href="'/detail/' + movie.id">
-              <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
+              <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+                :alt="movie.title">
               <img v-else src="fallback_image_url" alt="No Poster Available">
             </a>
           </div>
@@ -140,24 +160,24 @@ export default {
   },
   methods: {
     async fetchRandomMovie() {
-    try {
-      const randomPage = Math.floor(Math.random() * 100) + 1; // 임의의 페이지 선택
-      const response = await axios.get('https://api.themoviedb.org/3/movie/popular', {
-        params: {
-          api_key: 'fb1030ba317555b28d3ed69041db88ef',
-          language: 'ko-KR',
-          page: randomPage,
-        }
-      });
-      const movies = response.data.results;
+      try {
+        const randomPage = Math.floor(Math.random() * 100) + 1; // 임의의 페이지 선택
+        const response = await axios.get('https://api.themoviedb.org/3/movie/popular', {
+          params: {
+            api_key: 'fb1030ba317555b28d3ed69041db88ef',
+            language: 'ko-KR',
+            page: randomPage,
+          }
+        });
+        const movies = response.data.results;
 
-      // 무작위 영화 선택
-      const randomIndex = Math.floor(Math.random() * movies.length);
-      this.movies = [movies[randomIndex]]; // 결과를 배열로 감싸서 표시
-    } catch (error) {
-      console.log(error);
-    }
-  },
+        // 무작위 영화 선택
+        const randomIndex = Math.floor(Math.random() * movies.length);
+        this.movies = [movies[randomIndex]]; // 결과를 배열로 감싸서 표시
+      } catch (error) {
+        console.log(error);
+      }
+    },
     getImageUrl(path) {
       return path ? `https://image.tmdb.org/t/p/w500${path}` : ''; // 이미지가 없는 경우 빈 문자열 반환
     },
@@ -169,66 +189,67 @@ export default {
 #main {
   background-color: rgb(38, 38, 38);
 }
+
 .header__intro {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  padding: 30px;
+
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #00000032;
+    backdrop-filter: blur(7px);
+    z-index: 1;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
     position: relative;
-    padding: 30px;
+    z-index: 10;
 
-    &::before {
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background-color: #00000032;
-        backdrop-filter: blur(7px);
-        z-index: 1;
+    .left {
+      width: 350px;
+
     }
 
-    .container {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        z-index: 10;
+    .right {
+      width: calc(100% - 390px);
 
-        .left {
-            width: 350px;
+      h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
 
-        }
-
-        .right {
-            width: calc(100% - 390px);
-
-            h2 {
-                font-size: 30px;
-                margin-bottom: 10px;
-            }
-
-            .desc {
-                margin-bottom: 10px;
-            }
-        }
-    }
-
-    .credits {
-        margin-top: 20px;
-    }
-
-    .credits img {
-        width: 130px;
-        /* 이미지 폭 설정 */
-        height: 150px;
-        /* 이미지 높이 설정 *
-        /* 원형 프로필 이미지 모양 설정 */
-        padding: 10px;
+      .desc {
+        margin-bottom: 10px;
+      }
     }
   }
 
+  .credits {
+    margin-top: 20px;
+  }
 
-  .movie__search {
+  .credits img {
+    width: 130px;
+    /* 이미지 폭 설정 */
+    height: 150px;
+    /* 이미지 높이 설정 *
+        /* 원형 프로필 이미지 모양 설정 */
+    padding: 10px;
+  }
+}
+
+
+.movie__search {
   margin: 50px 0 20px;
   position: relative;
 
@@ -278,12 +299,12 @@ export default {
 
 .movie__cont {
   display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .movie {
     width: 24%;
-      margin-bottom: 2vh;
+    margin-bottom: 2vh;
   }
 }
 </style>
