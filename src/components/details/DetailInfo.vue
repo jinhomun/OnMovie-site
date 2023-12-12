@@ -16,6 +16,12 @@
                 </span>
             </div>
             <div>
+                <i>평점 :</i>
+                <span>
+                    {{ movieInfo.vote_average }}
+                </span>
+            </div>
+            <div>
                 <i>상영시간 :</i>
                 <span>
                     {{ movieInfo.runtime }}
@@ -32,10 +38,12 @@
 
     .info__inner {
         text-align: center;
+
         h2 {
             color: #fff;
             font-size: 2rem;
         }
+
         div {
             i {
                 margin-right: 1rem;

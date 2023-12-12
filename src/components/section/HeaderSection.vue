@@ -5,13 +5,13 @@
                 ON MOVIE
             </h1>
         </a>
-        <nav class="nav">
+        <!-- <nav class="nav">
             <ul>
                 <li><a href="/">홈</a></li>
-                <!-- <li><a href="#">영화 TOP10</a></li>
-                <li><a href="#">코미디영화 TOP10</a></li> -->
+                <li><a href="#">영화 TOP10</a></li>
+                <li><a href="#">코미디영화 TOP10</a></li>
             </ul>
-        </nav>
+        </nav> -->
     </header>
 </template>
 <style lang="scss">
@@ -21,9 +21,10 @@
     padding: 1rem;
     display: flex;
     align-items: center;
+    justify-content: center;
+    /* Center the child items horizontally */
     top: 0;
     background-color: #000000;
-    justify-content: space-between;
 
     .logo {
         width: 200px;
@@ -33,7 +34,6 @@
         font-weight: bold;
         text-align: center;
         background-color: #ff0000;
-        margin-right: 5rem;
     }
 
     .nav {

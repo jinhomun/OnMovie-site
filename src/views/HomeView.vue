@@ -87,7 +87,6 @@ onMounted(async () => {
           </p>
           <p class="date">개봉 : {{ movies[0].release_date }}</p>
           <p class="average">평점 : {{ movies[0].vote_average }} </p>
-
           <!-- <div class="credits">
                             <div>
                                 <img src="https://image.tmdb.org/t/p/w500/qoOp8XvZ4v7B0C9ZmtoRCl9CDSO.jpg"
