@@ -129,7 +129,7 @@ onMounted(async () => {
             <a :href="'/detail/' + movie.id">
               <img v-if="movie.poster_path" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
                 :alt="movie.title">
-              <img v-else src="fallback_image_url" alt="No Poster Available">
+              <img v-else src="../assets/img/profile.jpg" alt="No Poster Available">
             </a>
           </div>
         </section>
