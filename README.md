@@ -36,6 +36,41 @@ Done. Now run:
 npm install sass
 npm install axios 
 ```
+### 1. 프로젝트 셋팅
+  - Node.js, Vue.js, Vite, Sass 설치
+  - 프로젝트 생성 및 초기 설정
+### 2. scss폴더 셋팅
+  - CSS 프레임워크인 Sass를 사용하기 위한 설정
+### 3. components 분리
+  - header, main, footer 컴포넌트로 분리하여 코드 구조 개선
+### 4. postman 사용법 익히기
+  - API 테스트 및 디버깅에 유용한 postman 사용법 익히기
+### 5. postman으로 데이터 확인
+  - API를 통해 영화 정보를 요청하여 데이터가 정상적으로 반환되는지 확인
+### 6. env환경변수 설정
+  - API 키를 환경 변수로 설정하여 보안 강화
+
+### on Mounted
+- onMounted는 Vue.js에서 사용되는 라이프사이클 훅 중 하나입니다.    
+Vue.js는 컴포넌트 기반의 웹 애플리케이션을 만들기 위한 프레임워크로서, 컴포넌트의 라이프사이클을 이용하여 다양한 작업을 수행할 수 있습니다.   
+onMounted 훅은 Vue 3에서 도입된 훅으로, 컴포넌트가 마운트된 후에 실행되는 함수를 정의할 수 있습니다.    
+
+ ### v-for (반복문)
+- v-for 디렉티브는 배열이나 객체의 각 항목을 반복하여 템플릿에 렌더링할 때 사용됩니다.  
+### v-if (조건문)
+- v-if 디렉티브는 주어진 조건이 참일 때에만 해당 엘리먼트를 렌더링할 때 사용됩니다.  \
+```js
+ <div class="credit cast">
+    <div v-for="(cast, index) in movieCredits.cast.slice(0, 5)" :key="index">
+      <img v-if="cast.profile_path" :src="'https://image.tmdb.org/t/p/w500' + cast.profile_path" :alt="cast.name">
+      <img v-else src="../../assets/img/profile.jpg" alt="">
+      <p class="character">{{ cast.character }}</p>
+      <p class="name">{{ cast.name }}</p>
+    </div>
+  </div>
+```
+
+
 
 ### API 가져오기
 사이트[TMDB:영화api](https://www.themoviedb.org/?language=ko-KR)에 들어가서 키값을 받아온다.   
@@ -87,15 +122,61 @@ const searchMovies = async () => {
 <button type="submit" @click="searchMovies">검색</button>
 ```
 
-### 포스트맨 사용법
-사이트에서 가져온 주소를 작성한다.
-api-key를 주소 방식대로 입력해서 아래 정보를 가져오는지 확인한다.
+
 
 ### Detail view 작업
-`movieInfoFetch` 영화 정보를 가져오는 비동기 함수를 사용하였다.
-   
-`credits`에 크레딧 정보를 저장한 후에 등장인물 목록을 가져오는 `getPersonCredits` 함수를 사용하였다.
-   
-`components`를 이용해서 Detail view를 작업하였다.
-   
-`useRoute` 함수를 사용하여 현재 라우트의 정보를 가져오고, 해당 라우트에서 추출한 영화 ID를 사용하여 API 요청을 수행합니다.
+-`components`를 이용해서 Detail view를 작업하였다.
+```js
+<template>
+  <div>
+    <HeaderSection />
+    <main>
+    <DetailIntro v-if="movieBasic" :movieBasic="movieBasic" />
+    <DetailInfo v-if="movieInfo" :movieInfo="movieInfo" />
+    <DetailKeyWord v-if="movieKeyWord" :movieKeyWord="movieKeyWord" />
+    <DetailVideo v-if="movieVideo" :movieVideo="movieVideo" />
+    <DetailCredits v-if="movieCredits" :movieCredits="movieCredits" />
+    <!-- <DetailReview v-if="movieReview" :movieReview="movieReview" /> -->
+    </main>
+    <FooterSection />
+  </div>
+</template>
+```
+-`useRoute` 함수를 사용하여 현재 라우트의 정보를 가져오고, 해당 라우트에서 추출한 영화 ID를 사용하여 API 요청을 수행합니다.
+```js
+onMounted(async () => {
+    const route = useRoute();
+    const movieId = route.params.movieId;
+    const apiKey = import.meta.env.VITE_API_KEY;
+    const language = "ko-KR";
+
+    try {
+        const resMovieBasic = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?language=${language}&api_key=${apiKey}`);
+        movieBasic.value = resMovieBasic.data;
+
+        const resMovieVideo = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`);
+        movieVideo.value = resMovieVideo.data.results;
+        console.log(movieVideo);
+
+        const resMovieInfo = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?language=${language}&api_key=${apiKey}`);
+        movieInfo.value = resMovieInfo.data;
+
+        const resMovieKeyWord = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/keywords?language=${language}&api_key=${apiKey}`)
+        movieKeyWord.value = resMovieKeyWord.data;
+
+
+        const resmovieCredits = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`);
+        movieCredits.value = resmovieCredits.data;
+
+        // const resMovieReview = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/reviews?language=${language}&api_key=${apiKey}`)
+        // movieReview.value = resMovieReview.data;
+
+    } catch (err) {
+        console.log(err)
+    }
+});
+```
+
+## 트러블 슈팅
+#### axios로 데이터 요청 시 401 Unauthorized 오류 발생
+- API 키가 올바르지 않은 경우 발생할 수 있습니다. API 키를 확인하여 올바르게 설정했는지 확인해봅니다.
