@@ -58,7 +58,7 @@ onMounted 훅은 Vue 3에서 도입된 훅으로, 컴포넌트가 마운트된 �
  ### v-for (반복문)
 - v-for 디렉티브는 배열이나 객체의 각 항목을 반복하여 템플릿에 렌더링할 때 사용됩니다.  
 ### v-if (조건문)
-- v-if 디렉티브는 주어진 조건이 참일 때에만 해당 엘리먼트를 렌더링할 때 사용됩니다.  \
+- v-if 디렉티브는 주어진 조건이 참일 때에만 해당 엘리먼트를 렌더링할 때 사용됩니다.  
 ```js
  <div class="credit cast">
     <div v-for="(cast, index) in movieCredits.cast.slice(0, 5)" :key="index">
@@ -125,7 +125,7 @@ const searchMovies = async () => {
 
 
 ### Detail view 작업
--`components`를 이용해서 Detail view를 작업하였다.
+-`components`를 이용해서 Detail view를 작업합니다.
 ```js
 <template>
   <div>
