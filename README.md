@@ -1,22 +1,44 @@
-### vue 사용하여 movie 만들기   
-1. 우선 사이트[TMDB](https://www.themoviedb.org/?language=ko-KR)에 들어가서 키값을 받아온다.   
-### 설치하기   
-`npm create vue@latest`   
-```bush   
-√ Add TypeScript? ... No / Yes
-√ Add JSX Support? ... No / Yes
-√ Add Vue Router for Single Page Application development? ... No / Yes
-√ Add Pinia for state management? ... No / Yes
-√ Add Vitest for Unit Testing? ... No / Yes
+# vue.js를 사용해서 Movie site 만들기 
+
+![On movie](https://github.com/jinhomun/OnMovie-site/assets/144635699/89b2883a-8fd5-4fd9-854a-c73419da7cc7)
+
+On Movie는 Vue.js의 기능을 활용하여 영화 정보를 편리하게 찾을 수 있는 사이트입니다.
+
+- 최신 영화, 인기 영화, 개봉예정 영화, 최고 평점 영화 보기 
+  - 각 영화 목록 항목에는 영화 제목, 개봉일, 평점 등의 정보가 표시됩니다.
+- 영화 정보 보기
+  - 영화 목록을 클릭하면 해당 영화의 상세 정보를 볼 수 있습니다. 상세 정보에는 영화의 장르, 러닝타임, 출연진, 예고편 영상 등의 정보가 포함됩니다. 
+- 영화 검색 기능
+  - 영화 검색창에 영화 제목을 검색하면 관련된 결과가 출력됩니다.
+
+### 셋팅 & 설치하기 
+```js
+√ Project name: ... .
+√ Package name: ... movie
+√ Add TypeScript? ... No
+√ Add JSX Support? ... Yes
+√ Add Vue Router for Single Page Application development? ... Yes
+√ Add Pinia for state management? ... No
+√ Add Vitest for Unit Testing? ... No
 √ Add an End-to-End Testing Solution? » No
-√ Add ESLint for code quality? ... No / Yes
-√ Add Prettier for code formatting? ... No / Yes
+√ Add ESLint for code quality? ... Yes
+√ Add Prettier for code formatting? ... Yes
+
+Scaffolding project in C:\Users\line\Documents\GitHub\OnMoviesite
+
+Done. Now run:
+
+  npm install
+  npm run format
+  npm run dev
+``` 
+```js 
+npm install sass
+npm install axios 
 ```
-`npm install`   
-`npm run format`   
-`npm run dev`   
 
 ### API 가져오기
+사이트[TMDB:영화api](https://www.themoviedb.org/?language=ko-KR)에 들어가서 키값을 받아온다.   
 TMDB 에서 받아온 키 값을 아래처럼 받아와 작성해준다.
 
 ```js
