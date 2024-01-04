@@ -168,9 +168,6 @@ onMounted(async () => {
         const resmovieCredits = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`);
         movieCredits.value = resmovieCredits.data;
 
-        // const resMovieReview = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/reviews?language=${language}&api_key=${apiKey}`)
-        // movieReview.value = resMovieReview.data;
-
     } catch (err) {
         console.log(err)
     }
