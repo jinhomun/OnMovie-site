@@ -1,6 +1,6 @@
 # vue.js를 사용해서 Movie site 만들기 
 
-![On movie](https://github.com/jinhomun/OnMovie-site/assets/144635699/89b2883a-8fd5-4fd9-854a-c73419da7cc7)
+![On movie](https://github.com/jinhomun/OnMovie-site/assets/144635699/31eccf8d-b5d8-49fc-aa99-848322185a09)
 
 On Movie는 Vue.js의 기능을 활용하여 영화 정보를 편리하게 찾을 수 있는 사이트입니다.
 
